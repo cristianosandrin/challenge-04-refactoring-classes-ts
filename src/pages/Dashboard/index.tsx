@@ -1,13 +1,14 @@
-import { Component } from 'react';
+import { Component, useState } from 'react';
 
-import Header from '../../components/Header';
-import api from '../../services/api';
 import Food from '../../components/Food';
+import { Header } from '../../components/Header';
 import ModalAddFood from '../../components/ModalAddFood';
 import ModalEditFood from '../../components/ModalEditFood';
+import { NewDishModal } from '../../components/NewDishModal';
+import { api } from '../../services/api';
 import { FoodsContainer } from './styles';
 
-class Dashboard extends Component {
+export function Dashboard() {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,12 +85,29 @@ class Dashboard extends Component {
     this.setState({ editingFood: food, editModalOpen: true });
   }
 
-  render() {
+
     const { modalOpen, editModalOpen, editingFood, foods } = this.state;
+
+
+    const [isNewDishModalOpen, setIsNewDishModalOpen] = useState(false);
+
+    function handleOpenNewDishModal() {
+      setIsNewDishModalOpen(true);
+    }
+
+    function handleCloseNewDishModal() {
+      setIsNewDishModalOpen(false);
+    }
 
     return (
       <>
-        <Header openModal={this.toggleModal} />
+        <Header onOpenNewDishModal={handleOpenNewDishModal} />
+
+        <NewDishModal
+          isOpen={isNewDishModalOpen}
+          onRequestClose={handleCloseNewDishModal}
+        />
+
         <ModalAddFood
           isOpen={modalOpen}
           setIsOpen={this.toggleModal}
@@ -115,7 +133,5 @@ class Dashboard extends Component {
         </FoodsContainer>
       </>
     );
-  }
 };
 
-export default Dashboard;

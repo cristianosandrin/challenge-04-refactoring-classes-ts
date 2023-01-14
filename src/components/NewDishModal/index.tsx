@@ -1,31 +1,22 @@
 import { Component } from 'react';
-import ReactModal from 'react-modal';
+import Modal from 'react-modal';
 
-class Modal extends Component {
-  constructor(props) {
-    super(props);
+interface NewDishModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
 
-    const { isOpen } = this.props;
-    this.state = {
-      modalStatus: isOpen
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isOpen } = this.props;
-
-    if (prevProps.isOpen !== isOpen) {
-      console.log(this.props)
-      this.setState({ modalStatus: isOpen })
-    }
-  }
-
+export function NewDishModal({isOpen, onRequestClose}: NewDishModalProps) {
+  
   render() {
     const { children, setIsOpen } = this.props;
     const { modalStatus } = this.state;
 
     return (
-      <ReactModal
+      <Modal
+        isOpen={isOpen} 
+        onRequestClose={onRequestClose}>
+        
         shouldCloseOnOverlayClick={!false}
         onRequestClose={setIsOpen}
         isOpen={modalStatus}
@@ -50,9 +41,8 @@ class Modal extends Component {
         }}
       >
         {children}
-      </ReactModal>
+      </Modal>
     );
   }
 };
 
-export default Modal;
